@@ -1,5 +1,6 @@
 use crate::{events::RendererEvent, node::DisplayOuter};
 use crate::{Node, NodeData, TextNodeData};
+use parley::{FontContext, LayoutContext};
 use quadtree_rs::{area::AreaBuilder, Quadtree};
 use selectors::{matching::QuirksMode, Element};
 use slab::Slab;
@@ -15,7 +16,6 @@ use style::{
 };
 use taffy::{AvailableSpace, Cache, Layout};
 use url::Url;
-use parley::{FontContext, LayoutContext};
 
 pub trait DocumentLike: AsRef<Document> + AsMut<Document> + Into<Document> {
     fn poll(&mut self, _cx: std::task::Context) -> bool {

@@ -143,7 +143,6 @@ enum LayoutChildrenState {
     SameAsRegularChildren,
 }
 
-
 #[derive(Debug, Clone)]
 pub struct ElementNodeData {
     /// The elements tag name, namespace and prefix
