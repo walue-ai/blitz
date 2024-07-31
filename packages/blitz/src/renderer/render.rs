@@ -72,7 +72,7 @@ pub fn generate_vello_scene(
     generator.generate_vello_scene(scene);
 
     println!(
-        "Rendered using {} clips ({} wanted)",
+        "Rendered using {} clips ({} wanted)\n\n",
         CLIPS_USED.load(atomic::Ordering::SeqCst),
         CLIPS_WANTED.load(atomic::Ordering::SeqCst)
     );
@@ -338,6 +338,7 @@ impl<'dom> VelloSceneGenerator<'dom> {
             CLIPS_WANTED.fetch_add(1, atomic::Ordering::SeqCst);
         }
         if should_clip && clips_available {
+            println!("PUSH CLIP {:?}", &clip);
             scene.push_layer(Mix::Clip, 1.0, transform, &clip);
             CLIPS_USED.fetch_add(1, atomic::Ordering::SeqCst);
         }
@@ -405,6 +406,7 @@ impl<'dom> VelloSceneGenerator<'dom> {
         }
 
         if should_clip {
+            println!("POP CLIP");
             scene.pop_layer();
         }
     }
