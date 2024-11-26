@@ -40,6 +40,7 @@ dioxus-devtools = { version = "0.6.0-alpha.3" }
 taffy = { version = "0.6" }
 
 # Linebender + WGPU
+kurbo = "0.11"
 peniko = "0.2"
 vello = { version = "0.3", features = [ "wgpu" ] }
 parley = "0.2"
