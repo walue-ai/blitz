@@ -10,7 +10,7 @@ members = [
   "packages/dioxus-native",
   "packages/stylo_taffy",
   "apps/wpt",
-  "apps/readme",
+  "apps/readme", "packages/anyrender",
 ]
 resolver = "2"
 
