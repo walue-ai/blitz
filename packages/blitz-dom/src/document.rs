@@ -23,6 +23,7 @@ use std::any::Any;
 use std::collections::{BTreeMap, Bound, HashMap, HashSet, VecDeque};
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
+use std::time::Instant;
 use style::selector_parser::ServoElementSnapshot;
 use style::servo::media_queries::FontMetricsProvider;
 use style::servo_arc::Arc as ServoArc;
@@ -755,17 +756,40 @@ impl Document {
             return;
         }
 
+        static COUNT: AtomicUsize = AtomicUsize::new(0);
+        let i = COUNT.fetch_add(1, Ordering::Relaxed) + 1;
+
+        let start = Instant::now();
+
         // we need to resolve stylist first since it will need to drive our layout bits
+        let style_start = Instant::now();
         self.resolve_stylist();
+        let style_time = style_start.elapsed().as_micros() as f32 / 1000.0;
 
         // Fix up tree for layout (insert anonymous blocks as necessary, etc)
+        let construct_start = Instant::now();
         self.resolve_layout_children();
+        let construct_time = construct_start.elapsed().as_micros() as f32 / 1000.0;
 
         // Merge stylo into taffy
+        let flush_start = Instant::now();
         self.flush_styles_to_layout(self.root_element().id);
+        let flush_time = flush_start.elapsed().as_micros() as f32 / 1000.0;
 
         // Next we resolve layout with the data resolved by stlist
+        let layout_start = Instant::now();
         self.resolve_layout();
+        let layout_time = layout_start.elapsed().as_micros() as f32 / 1000.0;
+
+        let total_time = start.elapsed().as_micros() as f32 / 1000.0;
+
+        println!("RESOLVE {i} in {:.2}ms (style: {:.2}ms, construct: {:.2}ms, flush: {:.2}ms, layout: {:.2}ms)",
+            total_time,
+            style_time,
+            construct_time,
+            flush_time,
+            layout_time,
+        );
     }
 
     // Takes (x, y) co-ordinates (relative to the )
