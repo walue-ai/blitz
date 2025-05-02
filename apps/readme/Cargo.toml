@@ -10,6 +10,7 @@ blitz-net = { path = "../../packages/blitz-net" }
 blitz-traits = { path = "../../packages/blitz-traits" }
 blitz-html = { path = "../../packages/blitz-html" }
 anyrender_vello = { path = "../../packages/anyrender_vello" }
+anyrender_vello_cpu = { path = "../../packages/anyrender_vello_cpu" }
 blitz-shell = { path = "../../packages/blitz-shell", features = ["tracing"] }
 tokio = { workspace = true, features = ["rt", "rt-multi-thread"] }
 reqwest = { workspace = true }

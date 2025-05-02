@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use anyrender_vello::VelloWindowRenderer;
+use anyrender_vello_cpu::VelloCpuWindowRenderer as VelloWindowRenderer;
 use blitz_dom::net::Resource;
 use blitz_html::HtmlDocument;
 use blitz_shell::{BlitzApplication, BlitzShellEvent, View, WindowConfig};
