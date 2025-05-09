@@ -3,7 +3,7 @@ use kurbo::{Affine, Rect, Shape, Stroke};
 use peniko::{BlendMode, BrushRef, Color, Fill, Font, StyleRef, color::PremulRgba8};
 use std::sync::Arc;
 use vello_common::paint::PaintType;
-use vello_cpu::Pixmap;
+use vello_cpu::{Pixmap, RenderMode};
 
 const DEFAULT_TOLERANCE: f64 = 0.1;
 
@@ -66,7 +66,7 @@ impl Scene for VelloCpuAnyrenderScene {
         self.0.push_layer(
             Some(&clip.into_path(DEFAULT_TOLERANCE)),
             Some(blend.into()),
-            Some((alpha * 255.0) as u8),
+            Some(alpha * 255.0),
             None,
         );
     }
@@ -171,7 +171,8 @@ impl Scene for VelloCpuAnyrenderScene {
 
     fn finish(self) -> Self::Output {
         let mut pixmap = Pixmap::new(self.0.width(), self.0.height());
-        self.0.render_to_pixmap(&mut pixmap);
+        self.0
+            .render_to_pixmap(&mut pixmap, RenderMode::OptimizeSpeed);
         pixmap
     }
 }
